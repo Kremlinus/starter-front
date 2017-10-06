@@ -1,29 +1,13 @@
 var gulp = require('gulp');
-var sass = require('gulp-sass');
-var browserSync = require('browser-sync').create();
-var autoprefixer = require('gulp-autoprefixer');
+var plugins = require('gulp-load-plugins')();
+var notify = require('gulp-notify');
 
-gulp.task('styles', function () {
-   gulp.src('./scss/main.scss')
-   .pipe(sass())
-   .pipe(autoprefixer(
-      browsers: ['last 2 versions']
-   ))
-   .pipe(gulp.dest('./css'))
-   .pipe(browserSync.reload({stream: true}));
-})
+gulp.task('scripts', require('./gulp-tasks/scripts')(gulp, plugins));
+gulp.task('styles', require('./gulp-tasks/styles')(gulp, plugins));
+gulp.task('serve', require('./gulp-tasks/serve')(gulp, plugins));
+gulp.task('images', require('./gulp-tasks/images')(gulp, plugins));
 
-gulp.task('serve', function () {
-
-   browserSync.init({
-      server: {
-         baseDir: './.'
-      }
-   });
-
-   gulp.watch('./scss/*.scss', ['styles']);
-   gulp.watch('./**/*.html').on('change', browserSync.reload);
-
+gulp.task('default', ['styles', 'scripts', 'images','serve'], function () {
+    gulp.watch('src/js/**/*.js', ['scripts']);
+    gulp.watch('src/sass/**/*.{sass,scss}', ['sass']);
 });
-
-gulp.task('default', ['styles', 'serve']);
