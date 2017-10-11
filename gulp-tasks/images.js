@@ -1,8 +1,8 @@
-var notify = require('gulp-notify');
+var notify = require('gulp-notify')
 
 module.exports = function (gulp, plugins) {
-    return function () {
-      gulp.src('./images/*.*')
-         .pipe(notify('Images task'));
-    };
-};
+  return function () {
+    gulp.src('./images/*.*')
+        .pipe(notify('Images task'))
+  }
+}
